@@ -1,8 +1,7 @@
 name: Build_6_12_6
 
 on:
-    push:
-        branches: [build]
+    workflow_dispatch:
 
 jobs:
     compile:
