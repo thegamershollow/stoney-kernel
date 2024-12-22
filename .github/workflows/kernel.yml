@@ -23,7 +23,7 @@ jobs:
         - name: Extract Tarball
           working-directory: ./kernel
           run:  |
-            tar -xf linux-6.12.6.tar
+            tar -xf linux-6.12.6.tar.xz
             sudo chown -R $(whoami):$(whoami) linux-6.12.6
             
         - name: Clean Kernel tree
