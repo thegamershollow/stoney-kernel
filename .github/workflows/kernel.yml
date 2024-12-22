@@ -1,0 +1,57 @@
+name: Build_6_12_6
+
+on:
+    push:
+        branches: [build]
+
+jobs:
+    compile:
+        runs-on: ubuntu-latest
+
+        steps:
+        - uses: actions/checkout@v3
+        
+        - name: Install Dependencies
+          run:  | 
+            sudo apt install -y curl wget gcc bison make cmake build-essential libncurses-dev bison flex libssl-dev libelf-dev fakeroot tree
+            mkdir ./kernel
+          
+        - name: Fetch source
+          working-directory: ./kernel          
+          run:  |
+            wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.6.tar.xz
+            wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.6.tar.xz.sign
+            
+        - name: Verify Sources
+          working-directory: ./kernel
+          run: |
+            unxz -v linux-6.12.6.tar.xz
+            gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys 647F28654894E3BD457199BE38DBBDC86092693E
+            gpg --verify linux-6.12.6tar.sign
+            
+        - name: Extract Tarball
+          working-directory: ./kernel
+          run:  |
+            tar -xf linux-6.12.6.tar
+            sudo chown -R $(whoami):$(whoami) linux-6.12.6
+            
+        - name: Clean Kernel tree
+          working-directory: ./kernel/linux-6.12.6
+          run: make mrproper      
+        
+        - name: Configure and Make
+          working-directory:  ./kernel/linux-6.12.6
+          run: |
+            wget https://raw.githubusercontent.com/thegamershollow/stoney-kernel/refs/heads/main/kernel-config -O .config
+            make olddefconfig
+            make -j $(nproc)
+
+        - name: Make Deb Packages
+          working-directory:  ./kernel/linux-6.12.6
+          run: |
+            make-deb
+
+        - name: View Dir Tree
+          working-directory:  ./kernel/
+          run: tree -L 2
+          
