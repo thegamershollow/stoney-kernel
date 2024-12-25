@@ -41,6 +41,11 @@ jobs:
           working-directory:  ./kernel/linux-6.12.6
           run: |
             make-deb
+        
+        - name: Make rpms
+          working-directory: ./kernel/linux-6.12.6
+          run: |
+            binrpm-pkg
 
         - name: View Dir Tree
           working-directory:  ./kernel/
