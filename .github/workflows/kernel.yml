@@ -38,26 +38,27 @@ jobs:
             make -j`nproc`
         
         - name: Build Debian Package
-        working-directory: ./kernel/linux-6.12.6
-        run: |
+          working-directory: ./kernel/linux-6.12.6
+          run: |
             make bindeb-pkg
         
-        - name: Build Fedora Package
-        working-directory: ./kernel/linux-6.12.6
-        run: |
-            make binrpm-pkg
         - name: Build Tar Archive
-        working-directory: ./kernel/linux-6.12.6
-        run: |
+          working-directory: ./kernel/linux-6.12.6
+          run: |
             make targz-pkg
-
+        
+        - name: Build Fedora Package
+          working-directory: ./kernel/linux-6.12.6
+          run: |
+            make binrpm-pkg
+            
         - name: Upload Debian Package
-        uses: actions/upload-artifact@v3
-        with:
-          name: "Debian Packages"
-          path: ./kernel/linux-6.12.6/linux-image-6.12.6_x86_64.deb
-
-        - name: View Dir Tree
-          working-directory:  ./kernel/
+          uses: actions/upload-artifact@v3
+          with:
+              name: "Debian Packages"
+              path: ./kernel/linux-6.12.6/linux-image-6.12.6_x86_64.deb
+        
+        - name: view dir tree
+          working-directory: ./kernel
           run: tree -L 2
           
