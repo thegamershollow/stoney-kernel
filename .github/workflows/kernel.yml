@@ -12,7 +12,7 @@ jobs:
         
         - name: Install Dependencies
           run:  | 
-            sudo apt install -y curl wget gcc bison make cmake build-essential libncurses-dev bison flex libssl-dev libelf-dev fakeroot tree
+            sudo apt install -y git linux-firmware curl wget gcc bison make cmake build-essential libncurses-dev bison flex libssl-dev libelf-dev fakeroot tree
             mkdir ./kernel
           
         - name: Fetch source
@@ -35,17 +35,27 @@ jobs:
           run: |
             wget https://raw.githubusercontent.com/thegamershollow/stoney-kernel/refs/heads/main/kernel-config -O .config
             make olddefconfig
-            make -j $(nproc)
-
-        - name: Make Deb Packages
-          working-directory:  ./kernel/linux-6.12.6
-          run: |
-            make-deb
+            make -j`nproc`
         
-        - name: Make rpms
-          working-directory: ./kernel/linux-6.12.6
-          run: |
-            binrpm-pkg
+        - name: Build Debian Package
+        working-directory: ./kernel/linux-6.12.6
+        run: |
+            make bindeb-pkg
+        
+        - name: Build Fedora Package
+        working-directory: ./kernel/linux-6.12.6
+        run: |
+            make binrpm-pkg
+        - name: Build Tar Archive
+        working-directory: ./kernel/linux-6.12.6
+        run: |
+            make targz-pkg
+
+        - name: Upload Debian Package
+        uses: actions/upload-artifact@v3
+        with:
+          name: "Debian Packages"
+          path: ./kernel/linux-6.12.6/linux-image-6.12.6_x86_64.deb
 
         - name: View Dir Tree
           working-directory:  ./kernel/
