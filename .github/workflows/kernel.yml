@@ -64,4 +64,7 @@ jobs:
         - name: view dir tree
           working-directory: ./kernel
           run: tree -L 2
+        - name: view home dir
+          working-directory: ~/
+          run: tree -L 2
           
