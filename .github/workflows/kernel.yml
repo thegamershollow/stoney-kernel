@@ -56,28 +56,28 @@ jobs:
             make binrpm-pkg
             
         - name: Upload Debian Kernel Headers
-          uses: actions/upload-artifact@v3
+          uses: actions/upload-artifact@v4
           with:
               name: "Debian Kernel Headers"
               path: ./kernel/linux-headers-6.12.6_6.12.6-2_amd64.deb
        
         - name: Upload Debian Kernel Image
-          uses: actions/upload-artifact@v3
+          uses: actions/upload-artifact@v4
           with:
               name: "Debian Kernel Image"
               path: ./kernel/linux-image-6.12.6_6.12.6-2_amd64.deb
         - name: Upload Kernel Tarball
-          uses: actions/upload-artifact@v3
+          uses: actions/upload-artifact@v4
           with:
               name: "Kernel Tarball"
               path: ./kernel/linux-6.12.6.tar.xz
         - name: Upload Fedora Kernel Headers RPM
-          uses: actions/upload-artifact@v3
+          uses: actions/upload-artifact@v4
           with:
               name: "Fedora Kernel Headers RPM"
               path: ./kernel/linux-6.12.6/rpmbuild/RPMS/x86_64/kernel-headers-6.12.6-4.x86_64.rpm
         - name: Upload Fedora Kernel Image RPM
-          uses: actions/upload-artifact@v3
+          uses: actions/upload-artifact@v4
           with:
               name: "Fedora Kernel RPM"
               path: ./kernel/linux-6.12.6/rpmbuild/RPMS/x86_64/kernel-6.12.6-4.x86_64.rpm
