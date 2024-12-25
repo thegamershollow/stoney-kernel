@@ -55,11 +55,22 @@ jobs:
           run: |
             make binrpm-pkg
             
-        - name: Upload Debian Package
+        - name: Upload Debian Kernel Headers
           uses: actions/upload-artifact@v3
           with:
-              name: "Debian Packages"
-              path: ./kernel/linux-6.12.6/linux-image-6.12.6_x86_64.deb
+              name: "Debian Kernel Headers"
+              path: ./kernel/linux-6.12.6/linux-headers-6.12.6_6.12.6-2_amd64.deb
+       
+        - name: Upload Debian Kernel Image
+          uses: actions/upload-artifacts@v3
+          with:
+              name: "Debian Kernel Image"
+              path: ./kernel/linux-image-6.12.6_6.12.6-2_amd64.deb
+        - name: Upload Kernel Tarball
+          uses: actions/artifacts@v3
+          with:
+              name: "Kernel Tarball"
+              path: ./kernel/linux-6.12.6.tar.xz
         
         - name: view dir tree
           working-directory: ./kernel
