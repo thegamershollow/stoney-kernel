@@ -77,7 +77,7 @@ jobs:
               name: "Fedora Kernel Headers RPM"
               path: ./kernel/linux-6.12.6/rpmbuild/RPMS/x86_64/kernel-headers-6.12.6-4.x86_64.rpm
         - name: Upload Fedora Kernel Image RPM
-          uses: action/upload-artifact@v3
+          uses: actions/upload-artifact@v3
           with:
               name: "Fedora Kernel RPM"
               path: ./kernel/linux-6.12.6/rpmbuild/RPMS/x86_64/kernel-6.12.6-4.x86_64.rpm
