@@ -12,7 +12,7 @@ jobs:
         
         - name: Install Dependencies
           run:  | 
-            sudo apt install -y git linux-firmware curl wget gcc bison make cmake build-essential libncurses-dev bison flex libssl-dev libelf-dev fakeroot tree
+            sudo apt install -y git linux-firmware curl wget gcc bison make cmake build-essential libncurses-dev flex libelf-dev bc kmod cpio flex libncurses5-dev libelf-dev libssl-dev dwarves bison fakeroot tree debhelper-compat
             mkdir ./kernel
           
         - name: Fetch source
