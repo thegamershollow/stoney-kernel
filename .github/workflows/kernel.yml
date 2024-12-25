@@ -62,7 +62,7 @@ jobs:
               path: ./kernel/linux-6.12.6/linux-headers-6.12.6_6.12.6-2_amd64.deb
        
         - name: Upload Debian Kernel Image
-          uses: actions/upload-artifacts@v3
+          uses: actions/upload-artifact@v3
           with:
               name: "Debian Kernel Image"
               path: ./kernel/linux-image-6.12.6_6.12.6-2_amd64.deb
