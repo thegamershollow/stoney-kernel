@@ -67,7 +67,7 @@ jobs:
               name: "Debian Kernel Image"
               path: ./kernel/linux-image-6.12.6_6.12.6-2_amd64.deb
         - name: Upload Kernel Tarball
-          uses: actions/artifacts@v3
+          uses: actions/upload-artifact@v3
           with:
               name: "Kernel Tarball"
               path: ./kernel/linux-6.12.6.tar.xz
