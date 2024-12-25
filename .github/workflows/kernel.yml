@@ -29,7 +29,10 @@ jobs:
         - name: Clean Kernel tree
           working-directory: ./kernel/linux-6.12.6
           run: make mrproper      
-        
+
+        - name: Get CPU Core Count
+          run: nproc
+          
         - name: Configure and Make
           working-directory:  ./kernel/linux-6.12.6
           run: |
