@@ -40,7 +40,7 @@ jobs:
         run: make mrproper
 
       - name: Get CPU Core Count
-        run: echo "CPU Cores: $(nproc)"
+        run: nproc
 
       - name: Configure and Compile Kernel
         working-directory: ./kernel/linux-6.12.6
