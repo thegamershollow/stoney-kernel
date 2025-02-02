@@ -1,96 +1,100 @@
 name: Build_6_12_6
 
 on:
-    workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
-    compile:
-        runs-on: ubuntu-latest
+  compile:
+    runs-on: ubuntu-latest
 
-        steps:
-        - uses: actions/checkout@v3
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-	- name: Get Disk Space
-	  run:  | 
-            df -h
-        
-        - name: Install Dependencies
-          run:  | 
-            sudo apt install -y git linux-firmware curl wget gcc bison make cmake build-essential libncurses-dev flex libelf-dev bc kmod cpio flex libncurses5-dev libelf-dev libssl-dev dwarves bison fakeroot tree debhelper-compat
-        
-	- name: Make Kernel Directory
-	  run: |
-	    mkdir ./kernel
-          
-        - name: Fetch source
-          working-directory: ./kernel          
-          run:  |
-            wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.6.tar.xz
+      - name: Get Disk Space
+        run: df -h
 
-        - name: Extract Tarball
-          working-directory: ./kernel
-          run:  |
-            tar -xf linux-6.12.6.tar.xz
-            sudo chown -R $(whoami):$(whoami) linux-6.12.6
-            rm linux-6.12.6.tar.xz
-    
-        - name: Clean Kernel tree
-          working-directory: ./kernel/linux-6.12.6
-          run: make mrproper      
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y git linux-firmware curl wget gcc bison make cmake \
+          build-essential libncurses-dev flex libelf-dev bc kmod cpio \
+          libncurses5-dev libssl-dev dwarves fakeroot tree debhelper-compat
 
-        - name: Get CPU Core Count
-          run: nproc
-          
-        - name: Configure and Make
-          working-directory:  ./kernel/linux-6.12.6
-          run: |
-            wget https://raw.githubusercontent.com/thegamershollow/stoney-kernel/refs/heads/main/kernel-config -O .config
-            make olddefconfig
-            make -j`nproc`
-        
-        - name: Build Debian Package
-          working-directory: ./kernel/linux-6.12.6
-          run: |
-            make bindeb-pkg
-        
-        - name: Build Tar Archive
-          working-directory: ./kernel/linux-6.12.6
-          run: |
-            make targz-pkg
-        
-        - name: Build Fedora Package
-          working-directory: ./kernel/linux-6.12.6
-          run: |
-            make binrpm-pkg
-            
-        - name: Upload Debian Kernel Headers
-          uses: actions/upload-artifact@v4
-          with:
-              name: "Debian Kernel Headers"
-              path: ./kernel/linux-headers-6.12.6_6.12.6-2_amd64.deb
-       
-        - name: Upload Debian Kernel Image
-          uses: actions/upload-artifact@v4
-          with:
-              name: "Debian Kernel Image"
-              path: ./kernel/linux-image-6.12.6_6.12.6-2_amd64.deb
-        - name: Upload Kernel Tarball
-          uses: actions/upload-artifact@v4
-          with:
-              name: "Kernel Tarball"
-              path: ./kernel/linux-6.12.6.tar.xz
-        - name: Upload Fedora Kernel Headers RPM
-          uses: actions/upload-artifact@v4
-          with:
-              name: "Fedora Kernel Headers RPM"
-              path: ./kernel/linux-6.12.6/rpmbuild/RPMS/x86_64/kernel-headers-6.12.6-4.x86_64.rpm
-        - name: Upload Fedora Kernel Image RPM
-          uses: actions/upload-artifact@v4
-          with:
-              name: "Fedora Kernel RPM"
-              path: ./kernel/linux-6.12.6/rpmbuild/RPMS/x86_64/kernel-6.12.6-4.x86_64.rpm
-        
-        - name: view dir tree
-          working-directory: ./kernel
-          run: tree -L 2
-          
+      - name: Make Kernel Directory
+        run: mkdir -p ./kernel
+
+      - name: Fetch Kernel Source
+        working-directory: ./kernel
+        run: wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.6.tar.xz
+
+      - name: Extract Kernel Source
+        working-directory: ./kernel
+        run: |
+          tar -xf linux-6.12.6.tar.xz
+          sudo chown -R $(whoami):$(whoami) linux-6.12.6
+          rm linux-6.12.6.tar.xz
+
+      - name: Clean Kernel Tree
+        working-directory: ./kernel/linux-6.12.6
+        run: make mrproper
+
+      - name: Get CPU Core Count
+        run: echo "CPU Cores: $(nproc)"
+
+      - name: Configure and Compile Kernel
+        working-directory: ./kernel/linux-6.12.6
+        run: |
+          wget https://raw.githubusercontent.com/thegamershollow/stoney-kernel/main/kernel-config -O .config
+          make olddefconfig
+          make -j$(nproc)
+
+      - name: Build Debian Package
+        working-directory: ./kernel/linux-6.12.6
+        run: make bindeb-pkg
+
+      - name: Build Kernel Tar Archive
+        working-directory: ./kernel/linux-6.12.6
+        run: make targz-pkg
+
+      - name: Build Fedora Package
+        working-directory: ./kernel/linux-6.12.6
+        run: make binrpm-pkg
+
+      - name: Debug - List Output Files
+        working-directory: ./kernel
+        run: ls -lah
+
+      - name: Upload Debian Kernel Headers
+        uses: actions/upload-artifact@v4
+        with:
+          name: "Debian Kernel Headers"
+          path: ./kernel/linux-headers-*.deb
+
+      - name: Upload Debian Kernel Image
+        uses: actions/upload-artifact@v4
+        with:
+          name: "Debian Kernel Image"
+          path: ./kernel/linux-image-*.deb
+
+      - name: Upload Kernel Tarball
+        uses: actions/upload-artifact@v4
+        with:
+          name: "Kernel Tarball"
+          path: ./kernel/linux-6.12.6.tar.xz
+
+      - name: Upload Fedora Kernel Headers RPM
+        uses: actions/upload-artifact@v4
+        with:
+          name: "Fedora Kernel Headers RPM"
+          path: ./kernel/linux-6.12.6/rpmbuild/RPMS/x86_64/kernel-headers-*.rpm
+
+      - name: Upload Fedora Kernel Image RPM
+        uses: actions/upload-artifact@v4
+        with:
+          name: "Fedora Kernel RPM"
+          path: ./kernel/linux-6.12.6/rpmbuild/RPMS/x86_64/kernel-*.rpm
+
+      - name: View Directory Tree
+        working-directory: ./kernel
+        run: tree -L 2
