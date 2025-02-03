@@ -36,5 +36,5 @@ jobs:
         run: bash build.sh
 
       - name: Display File Tree
-        working-directory: /mnt/kernel
-        run: tree -L 2
+        working-directory: /mnt
+        run: tree -L 3
