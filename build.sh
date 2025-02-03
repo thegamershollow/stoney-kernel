@@ -87,3 +87,5 @@ while read -rd '' file; do
     esac
 done < <(find "$header_dir" -type f -perm -u+x ! -name vmlinux -print0)
 strip $header_dir/vmlinux
+
+make bindeb-pkg -j$(nproc)
