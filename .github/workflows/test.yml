@@ -1,0 +1,41 @@
+name: Build Kernel
+
+on:
+  workflow_dispatch:
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Get Disk Space
+        run: df -h
+
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y git linux-firmware curl wget gcc bison make cmake \
+          build-essential libncurses-dev flex libelf-dev bc kmod cpio \
+          libncurses5-dev libssl-dev dwarves fakeroot tree debhelper-compat
+
+      - name: Make Kernel Directory
+        run: sudo mkdir -p /mnt/kernel
+      
+      - name: Change perms of mnt dir
+        run: sudo chown -R $(whoami):$(whoami) /mnt
+
+      - name: Get Script
+        run: curl -LOk https://raw.githubusercontent.com/thegamershollow/stoney-kernel/refs/heads/main/build.sh
+
+      - name: Run Script
+        run: bash build.sh
+
+      - name: Upload Kernel Deb File
+        uses: actions/upload-artifact@v4
+        with:
+          name: "Deb Package Kernel"
+          path: /mnt/kernel/linux-6.12.6/linux-6.12.6-x86.tar.gz
+
