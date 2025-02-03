@@ -28,11 +28,11 @@ jobs:
         run: sudo chown -R $(whoami):$(whoami) /mnt
 
       - name: Get Script
-        working-dir: /mnt/kernel
+        working-directory: /mnt/kernel
         run: curl -LOk https://raw.githubusercontent.com/thegamershollow/stoney-kernel/refs/heads/main/build.sh
 
       - name: Run Script
-        working-dir: /mnt/kernel
+        working-directory: /mnt/kernel
         run: bash build.sh
 
       - name: Display File Tree
