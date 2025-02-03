@@ -28,14 +28,12 @@ jobs:
         run: sudo chown -R $(whoami):$(whoami) /mnt
 
       - name: Get Script
+        working-dir: /mnt/kernel
         run: curl -LOk https://raw.githubusercontent.com/thegamershollow/stoney-kernel/refs/heads/main/build.sh
 
       - name: Run Script
+        working-dir: /mnt/kernel
         run: bash build.sh
 
-      - name: Upload Kernel Deb File
-        uses: actions/upload-artifact@v4
-        with:
-          name: "Deb Package Kernel"
-          path: /mnt/kernel/linux-6.12.6/linux-6.12.6-x86.tar.gz
-
+      - name: Display File Tree
+        run: tree -L 2
