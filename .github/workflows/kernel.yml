@@ -54,15 +54,15 @@ jobs:
 
       - name: Build Debian Package
         working-directory: /mnt/kernel/linux-6.12.6
-        run: make bindeb-pkg
+        run: make bindeb-pkg -j$(nproc)
 
       - name: Build Kernel Tar Archive
         working-directory: /mnt/kernel/linux-6.12.6
-        run: make targz-pkg
+        run: make targz-pkg -j$(nproc)
 
       - name: Build Fedora Package
         working-directory: /mnt/kernel/linux-6.12.6
-        run: make binrpm-pkg
+        run: make binrpm-pkg -j$(nproc)
 
       - name: Debug - List Output Files
         working-directory: /mnt/kernel
