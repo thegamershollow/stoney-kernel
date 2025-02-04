@@ -47,10 +47,16 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: "Debian Kernel Headers"
-          path: /mnt/kernel/stoney-kernel/build/linux-headers-*.deb
+          path: /mnt/kernel/stoney-kernel/source/stoney/linux-headers-*.deb
 
       - name: Upload Debian Kernel Image
         uses: actions/upload-artifact@v4
         with:
           name: "Debian Kernel Image"
-          path: /mnt/kernel/stoney-kernel/build/linux-image-*.deb
+          path: /mnt/kernel/stoney-kernel/source/stoney/linux-image-*.deb
+
+      - name: Upload Kernel Tarball
+        uses: actions/upload-artifact@v4
+        with:
+          name: "Kernel Tarball"
+          path: /mnt/kernel/stoney-kernel/source/stoney/linux-*/linux-*-x86.tar.gz

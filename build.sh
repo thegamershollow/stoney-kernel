@@ -88,4 +88,12 @@ while read -rd '' file; do
 done < <(find "$header_dir" -type f -perm -u+x ! -name vmlinux -print0)
 strip $header_dir/vmlinux
 
+echo "Building $variant Kernel Debian Package"
+
 make bindeb-pkg -j$(nproc)
+
+echo "Building $variant Kernel Tarball"
+
+make targz-pkg -j$(nproc)
+
+echo "DONE!"
