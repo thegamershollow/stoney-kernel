@@ -35,6 +35,22 @@ jobs:
         working-directory: /mnt/kernel/stoney-kernel
         run: bash build.sh
 
+      - name: Debug - List Output Files
+        working-directory: /mnt/kernel/stoney-kernel
+        run: ls -lah
+
       - name: Display File Tree
         working-directory: /mnt/kernel/stoney-kernel
         run: tree -L 3
+
+     - name: Upload Debian Kernel Headers
+        uses: actions/upload-artifact@v4
+        with:
+          name: "Debian Kernel Headers"
+          path: /mnt/kernel/stoney-kernel/buildlinux-headers-*.deb
+
+      - name: Upload Debian Kernel Image
+        uses: actions/upload-artifact@v4
+        with:
+          name: "Debian Kernel Image"
+          path: /mnt/kernel/stoney-kerenl/build/linux-image-*.deb
