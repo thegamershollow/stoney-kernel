@@ -1,4 +1,4 @@
-name: Build_6_12_6
+name: Deprecated Kernel Build
 
 on:
   workflow_dispatch:
