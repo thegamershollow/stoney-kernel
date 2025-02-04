@@ -36,5 +36,5 @@ jobs:
         run: bash build.sh
 
       - name: Display File Tree
-        working-directory: /mnt
+        working-directory: /mnt/kernel/stoney-kernel
         run: tree -L 3
