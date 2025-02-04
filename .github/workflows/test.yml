@@ -59,4 +59,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: "Kernel Tarball"
-          path: /mnt/kernel/stoney-kernel/source/stoney/linux-*/linux-*-x86.tar.gz
+          path: /mnt/kernel/stoney-kernel/source/stoney/linux-*/linux-*-x86.tar.gz- 
+      
+      - name: Upload Fedora Kernel RPM
+        uses: actions/upload-artifact@v4
+        with:
+          name: "Fedora Kernel RPM"
+          path: /mnt/kernel/stoney-kernel/source/stoney/linux-*/rpmbuild/RPMS/x86_64/kernel-*.rpm
