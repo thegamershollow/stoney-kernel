@@ -96,7 +96,7 @@ echo "Building $variant Kernel Tarball"
 
 make targz-pkg -j$(nproc)
 
-echo "Building $varient Kernel Fedora Package
+echo "Building $varient Kernel Fedora Package"
 
 make binrpm-pkg -j$(nproc)
 
